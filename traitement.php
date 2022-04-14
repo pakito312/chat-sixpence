@@ -35,3 +35,22 @@ if(isset($_GET['action']) && $_GET['action'] == "get"){
     }
     echo  json_encode($data);exit;
 }
+
+if(isset($_GET['action']) && $_GET['action'] == "cadeau"){
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://www.sixpence.tv/assets_dibona/fonctions/Produits_site.php?action=listProduit&idpage=boutique&idcat=2&idetiq=0&idproduit=0');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"CL_CODE\":\"500100\",\"CL_PASS\":802140}");
+
+    $headers = array();
+    $headers[] = 'Content-Type: application/json';
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    echo$result = curl_exec($ch);
+    if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
+    }
+    curl_close($ch);
+}
