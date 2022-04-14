@@ -28,7 +28,7 @@ class Query
     
     public function getMessage($uid,$lastid)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM `message` WHERE `uid`=? AND `id`>=? ");
+        $stmt = $this->dbh->prepare("SELECT * FROM `messages` WHERE `uid`=? AND `id`>? ");
         $stmt->execute([$uid,$lastid]);
         return$stmt->fetchAll(PDO::FETCH_OBJ);
     }

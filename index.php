@@ -31,7 +31,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
 <script>
 	var uid="116fb54a-cae8-4bbe-9511-84e80ade8f1b";
-	var username="paki"
+	var username="salomon"
 </script>
 <script src="assets/js/main.js?v=<?=time()?>"></script>
 </body>

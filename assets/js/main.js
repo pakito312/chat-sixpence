@@ -1,7 +1,7 @@
+var lastid=0;
 $(document).ready(function(){
 
 	fetch_message();
-	var lastid=1;
 	setInterval(function(){
 		fetch_message();
 	}, 5000);
@@ -14,27 +14,35 @@ $(document).ready(function(){
 	
 	function make_chat_dialog_box(username, message)
 	{
-		var modal_content = `<span class="uname">${username}</span>:
-								<span class="msg">${message}</span>`;
+		var modal_content = `<br /><span class="uname">${username}</span>:
+								<span class="msg">${message}</span><br />`;
 		$('#chatlogs').append(modal_content);
 	}
 
-	
+	$('#message').keypress(function (e) {
+		console.log(e)
+		if (e.which == 13) {
+		  $('form#form1').submit();
+		  return false;    //<---- Add this line
+		}
+	  });
 
-	$('.send_chat').on('click', function(){
-		var to_user_id = $(this).attr('id');
-		var chat_message = $.trim($('#chat_message_'+to_user_id).val());
+	$('.send_chat').on('click', function(e){
+		e.preventDefault();
+		console.log('ici')
+		var chat_message = $('#message').val();
 		if(chat_message != '')
 		{
 			$.ajax({
 				url:`traitement.php?action=add&uid=${uid}`,
 				method:"POST",
-				data:{username:to_user_id, message:chat_message},
+				data:{username:username, message:chat_message},
+				dataType: "json",
 				success:function(data)
 				{
-					var element = $('#chat_message_'+to_user_id).emojioneArea();
+					var element = $('#message').emojioneArea();
 					element[0].emojioneArea.setText('');
-					make_chat_dialog_box(data.username, data.message);
+					
 				}
 			})
 		}
@@ -49,16 +57,21 @@ $(document).ready(function(){
 		$.ajax({
 			url:`traitement.php?action=get&uid=${uid}&lastid=${lastid}`,
 			method:"POST",
+			dataType: "json",
 			success:function(data){
 				for (let index = 0; index < data.length; index++) {
-					const info = data[index];
+					var info = data[index];
 					make_chat_dialog_box(info.username, info.message);
+				}
+				let n=data.length;
+				if(data[n-1]!=undefined){
+					lastid=data[n-1].id;
 				}
 			}
 		})
 	}
 
-
+	
 	
 
 	
